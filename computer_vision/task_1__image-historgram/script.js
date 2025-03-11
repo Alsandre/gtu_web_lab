@@ -94,8 +94,12 @@ function processFile(file) {
 function processFileUrl(url) {
   showLoading();
   disableInputs();
+
+  // Use your proxy endpoint to fetch the image
+  const proxyUrl = `https://<your-netlify-site>/.netlify/functions/proxy?url=${encodeURIComponent(url)}`;
+
   const img = new Image();
-  img.crossOrigin = "anonymous";
+  // No need for crossOrigin here because our proxy will serve the image with proper headers.
   img.onload = function () {
     imageCanvas.width = img.width;
     imageCanvas.height = img.height;
@@ -121,7 +125,7 @@ function processFileUrl(url) {
     enableInputs();
     placeholder.textContent = "Failed to load image.";
   };
-  img.src = url;
+  img.src = proxyUrl;
 }
 
 // Render histogram using Chart.js
