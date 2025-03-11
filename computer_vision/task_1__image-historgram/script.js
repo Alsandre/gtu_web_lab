@@ -3,6 +3,9 @@ const dropZone = document.getElementById("dropZone");
 const imageCanvas = document.getElementById("imageCanvas");
 const imageCtx = imageCanvas.getContext("2d");
 const histogramChartCtx = document.getElementById("histogramChart").getContext("2d");
+const urlInput = document.getElementById("urlInput");
+const loadUrlBtn = document.getElementById("loadUrlBtn");
+const inputContainer = document.getElementById("inputContainer");
 let chartInstance; // Holds Chart.js instance
 
 // Handle file input selection
@@ -13,6 +16,12 @@ imageInput.addEventListener("change", function (event) {
   }
 });
 dropZone.addEventListener("click", () => imageInput.click());
+loadUrlBtn.addEventListener("click", () => {
+  const url = urlInput.value.trim();
+  if (url) {
+    processFileUrl(url);
+  }
+});
 
 // Prevent default drag behaviors on dropZone
 ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
@@ -46,6 +55,7 @@ function processFile(file) {
     alert("Please upload an image file.");
     return;
   }
+  disableInputs();
   const reader = new FileReader();
   reader.onload = function (e) {
     const img = new Image();
@@ -70,6 +80,9 @@ function processFile(file) {
       }
 
       renderHistogramChart(histogram);
+      setTimeout(() => {
+        enableInputs();
+      }, 1500);
     };
     img.src = e.target.result;
   };
@@ -129,4 +142,12 @@ function renderHistogramChart(histogram) {
       },
     },
   });
+}
+
+function disableInputs() {
+  inputContainer.classList.add("disabled");
+}
+
+function enableInputs() {
+  inputContainer.classList.remove("disabled");
 }

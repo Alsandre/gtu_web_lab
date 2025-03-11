@@ -30,17 +30,38 @@
         width: 80%;
         margin: 20px auto;
       }
+      #inputContainer {
+        border: 3px solid #7fa8eb;
+        background: #d6e8f2;
+        padding: 20px;
+        width: 80%;
+        max-width: 600px;
+        margin: auto;
+        border-radius: 10px;
+      }
+
+      #inputContainer.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <h2>Upload an Image</h2>
-    <!-- File input for image upload -->
-    <input type="file" id="imageInput" accept="image/*" />
+    <div id="inputContainer">
+      <!-- File input for image upload -->
+      <input type="file" id="imageInput" accept="image/*" />
 
-    <!-- Or drag and drop image file here -->
-    <div id="dropZone">Or drop image file here</div>
+      <!-- Or drag and drop image file here -->
+      <div id="dropZone">Or drop image file here</div>
 
+      <!-- URL input field and button under drop zone -->
+      <div id="urlInputContainer">
+        <input type="text" id="urlInput" placeholder="Enter image URL" />
+        <button id="loadUrlBtn">Load Image from URL</button>
+      </div>
+    </div>
     <!-- Hidden canvas for image processing -->
     <canvas id="imageCanvas" style="display: none"></canvas>
 
