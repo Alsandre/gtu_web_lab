@@ -4,21 +4,47 @@
     <meta charset="UTF-8" />
     <title>Image Histogram</title>
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      #dropZone {
+        width: 80%;
+        max-width: 600px;
+        height: 150px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 2px dashed #aaa;
+        border-radius: 10px;
+        line-height: 110px;
+        color: #aaa;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      #dropZone.hover {
+        background-color: #f0f0f0;
+        border-color: #777;
+        color: #777;
+      }
       #chartContainer {
         width: 80%;
-        margin: auto;
+        margin: 20px auto;
       }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
+    <h2>Upload an Image</h2>
     <!-- File input for image upload -->
     <input type="file" id="imageInput" accept="image/*" />
+
+    <!-- Or drag and drop image file here -->
+    <div id="dropZone">Or drop image file here</div>
 
     <!-- Hidden canvas for image processing -->
     <canvas id="imageCanvas" style="display: none"></canvas>
 
-    <!-- Canvas for Chart.js histogram rendering -->
+    <!-- Chart container for histogram rendering -->
     <div id="chartContainer">
       <canvas id="histogramChart"></canvas>
     </div>
