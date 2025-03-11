@@ -6,6 +6,7 @@ const histogramChartCtx = document.getElementById("histogramChart").getContext("
 const urlInput = document.getElementById("urlInput");
 const loadUrlBtn = document.getElementById("loadUrlBtn");
 const inputContainer = document.getElementById("inputContainer");
+const placeholder = document.getElementById("placeholder");
 let chartInstance; // Holds Chart.js instance
 
 // Handle file input selection
@@ -55,6 +56,7 @@ function processFile(file) {
     alert("Please upload an image file.");
     return;
   }
+  showLoading();
   disableInputs();
   const reader = new FileReader();
   reader.onload = function (e) {
@@ -79,6 +81,7 @@ function processFile(file) {
         histogram[gray]++;
       }
 
+      hidePlaceholder();
       renderHistogramChart(histogram);
       setTimeout(() => {
         enableInputs();
@@ -87,6 +90,38 @@ function processFile(file) {
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
+}
+function processFileUrl(url) {
+  showLoading();
+  disableInputs();
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.onload = function () {
+    imageCanvas.width = img.width;
+    imageCanvas.height = img.height;
+    imageCtx.drawImage(img, 0, 0);
+    const imageData = imageCtx.getImageData(0, 0, img.width, img.height);
+    const data = imageData.data;
+    const histogram = new Array(256).fill(0);
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i],
+        g = data[i + 1],
+        b = data[i + 2];
+      const gray = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+      histogram[gray]++;
+    }
+    setTimeout(() => {
+      renderHistogramChart(histogram);
+      enableInputs();
+      hidePlaceholder();
+    }, 1500);
+  };
+  img.onerror = function () {
+    alert("Failed to load image. Check the URL and CORS policy.");
+    enableInputs();
+    placeholder.textContent = "Failed to load image.";
+  };
+  img.src = url;
 }
 
 // Render histogram using Chart.js
@@ -150,4 +185,16 @@ function disableInputs() {
 
 function enableInputs() {
   inputContainer.classList.remove("disabled");
+}
+
+// Function to show loading state in placeholder
+function showLoading() {
+  placeholder.textContent = "Processing image...";
+  placeholder.classList.add("loading");
+  placeholder.style.display = "block";
+}
+
+// Function to hide placeholder after processing
+function hidePlaceholder() {
+  placeholder.style.display = "none";
 }
