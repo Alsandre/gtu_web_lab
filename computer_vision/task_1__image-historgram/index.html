@@ -3,10 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <title>Image Histogram</title>
+    <style>
+      #chartContainer {
+        width: 80%;
+        margin: auto;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
+    <!-- File input for image upload -->
     <input type="file" id="imageInput" accept="image/*" />
-    <canvas id="canvas" style="display: none"></canvas>
+
+    <!-- Hidden canvas for image processing -->
+    <canvas id="imageCanvas" style="display: none"></canvas>
+
+    <!-- Canvas for Chart.js histogram rendering -->
+    <div id="chartContainer">
+      <canvas id="histogramChart"></canvas>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
