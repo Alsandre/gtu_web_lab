@@ -96,7 +96,7 @@ function processFileUrl(url) {
   disableInputs();
 
   // Use your proxy endpoint to fetch the image
-  const proxyUrl = `https://<your-netlify-site>/.netlify/functions/proxy?url=${encodeURIComponent(url)}`;
+  const proxyUrl = `https://gtu-lab.netlify.app/.netlify/functions/proxy?url=${encodeURIComponent(url)}`;
 
   const img = new Image();
   // No need for crossOrigin here because our proxy will serve the image with proper headers.
