@@ -1,6 +1,5 @@
 import { createCanvasFromImage, getImageData, createImageFromImageData } from "../utils/imageProcessing.js";
 import { applySaturationAdjustment } from "../algorithms/filters/saturation.js";
-import { applyGrayscale } from "../algorithms/color/grayscale.js";
 
 export const saturationTool = {
   name: "Saturation Adjustment",
