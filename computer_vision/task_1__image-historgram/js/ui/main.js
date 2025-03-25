@@ -27,14 +27,23 @@ const elements = {
   loadUrlBtn: document.getElementById("loadUrlBtn"),
   pipelineSteps: document.querySelector(".pipeline-steps"),
   previewContainer: document.querySelector(".preview-container"),
+  toggleHandle: document.querySelector(".toggle-handle"),
+  adjacentSection: document.querySelector(".adjacent-section"),
 };
 
 // Event Listeners
 function initializeEventListeners() {
-  // Toggle tools panel
-  elements.togglePanelBtn.addEventListener("click", () => {
-    elements.toolsPanel.classList.toggle("collapsed");
-  });
+  // Tool panel toggle
+  const toggleBtn = document.querySelector(".toggle-panel-btn");
+  const toggleHandle = document.querySelector(".toggle-handle");
+  const toolsPanel = document.querySelector(".tools-panel");
+
+  function togglePanel() {
+    toolsPanel.classList.toggle("collapsed");
+  }
+
+  toggleBtn.addEventListener("click", togglePanel);
+  toggleHandle.addEventListener("click", togglePanel);
 
   // File upload handling
   elements.dropZone.addEventListener("click", () => {
