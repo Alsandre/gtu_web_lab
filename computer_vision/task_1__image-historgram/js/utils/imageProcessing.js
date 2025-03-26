@@ -58,8 +58,26 @@ export function createHistogram(imageData) {
   const histogram = new Array(256).fill(0);
   const data = imageData.data;
 
-  for (let i = 0; i < data.length; i += 4) {
-    histogram[Math.round(data[i])]++;
+  // Check if image is grayscale by sampling a few pixels
+  let isGrayscale = true;
+  for (let i = 0; i < Math.min(1000, data.length); i += 4) {
+    if (data[i] !== data[i + 1] || data[i + 1] !== data[i + 2]) {
+      isGrayscale = false;
+      break;
+    }
+  }
+
+  if (isGrayscale) {
+    // For grayscale images, just use the red channel (or any channel since they're all the same)
+    for (let i = 0; i < data.length; i += 4) {
+      histogram[data[i]]++;
+    }
+  } else {
+    // For color images, calculate average intensity across all channels
+    for (let i = 0; i < data.length; i += 4) {
+      const avgIntensity = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3);
+      histogram[avgIntensity]++;
+    }
   }
 
   return histogram;
