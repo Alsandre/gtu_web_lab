@@ -29,15 +29,18 @@
 
       <!-- Preview Area -->
       <div class="preview-area">
-        <!-- Image Upload Section -->
-        <div class="preview-item">
-          <div class="preview-item-header">
+        <!-- Upload Section -->
+        <div class="upload-section">
+          <div class="upload-section-header">
             <h3>Upload Image</h3>
           </div>
-          <div class="preview-content">
+          <div class="upload-content">
             <div id="dropZone" class="thumbnail">
               <input type="file" id="imageInput" accept="image/*" style="display: none" />
-              <div class="upload-placeholder">Drop image here or click to upload</div>
+              <div class="upload-placeholder">
+                <p>Drop image here or click to upload</p>
+                <p style="font-size: 0.9em; color: #999">Supported formats: JPG, PNG, GIF</p>
+              </div>
             </div>
             <div id="urlInputContainer">
               <input type="text" id="urlInput" placeholder="Enter image URL" />
