@@ -2,6 +2,7 @@
 import { grayscaleTool } from "../tools/grayscale.js";
 import { histogramTool } from "../tools/histogram.js";
 import { averagingTool } from "../tools/averaging.js";
+import { drawHistogramChart } from "../utils/imageProcessing.js";
 
 // UI State Management
 const state = {
@@ -243,22 +244,47 @@ function updatePreviews() {
   });
 }
 
-function addPreview(title, image) {
+function addPreview(title, content) {
   const previewItem = document.createElement("div");
   previewItem.className = "preview-item";
-  previewItem.innerHTML = `
-        <div class="preview-item-header">
-            <h3>${title}</h3>
+
+  if (content.type === "chart") {
+    // Handle chart preview
+    const chartCanvas = document.createElement("canvas");
+    chartCanvas.width = 800;
+    chartCanvas.height = 400;
+    drawHistogramChart(chartCanvas, content.data);
+
+    previewItem.innerHTML = `
+      <div class="preview-item-header">
+        <h3>${title}</h3>
+      </div>
+      <div class="preview-content">
+        <div class="chart-container">
+          <canvas class="histogram-chart"></canvas>
         </div>
-        <div class="preview-content">
-            <img src="${image.src}" class="thumbnail" alt="${title}">
-        </div>
+      </div>
     `;
 
-  // Add click handler for full preview
-  previewItem.querySelector(".thumbnail").addEventListener("click", () => {
-    showFullPreview(image);
-  });
+    // Initialize the chart
+    const ctx = previewItem.querySelector(".histogram-chart").getContext("2d");
+    drawHistogramChart(previewItem.querySelector(".histogram-chart"), content.data);
+  } else {
+    // Handle image preview
+    previewItem.innerHTML = `
+      <div class="preview-item-header">
+        <h3>${title}</h3>
+      </div>
+      <div class="preview-content">
+        <img src="${content.src}" class="thumbnail" alt="${title}">
+      </div>
+    `;
+
+    // Add click handler for full preview
+    previewItem.querySelector(".thumbnail").addEventListener("click", () => {
+      showFullPreview(content);
+    });
+  }
 
   elements.previewContainer.appendChild(previewItem);
 }
@@ -271,7 +297,15 @@ function showFullPreview(image) {
 
 // Tool processing
 function processImageWithTool(image, tool) {
-  return tool.apply(image);
+  const result = tool.apply(image);
+
+  // If the result is an object with a type property, it's a special preview type
+  if (result && typeof result === "object" && result.type) {
+    return result;
+  }
+
+  // Otherwise, it's a regular image result
+  return result;
 }
 
 // Initialize the application
